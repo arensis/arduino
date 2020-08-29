@@ -1,0 +1,172 @@
+body {
+	background-color: #029af1; 
+	color: white; 
+	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.header, .outdoor-title, .outdoor-measurement, .outdoor-weather-state, .indoor-title, .indoor-measurement, .indoor-sub-measurement {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+.header {
+	grid-area: 1 / span 18;
+	grid-row: 1;
+	font-size: 5vw; 
+}
+.grid-container {
+	display: grid;
+	grid-template-columns: repeat(17, 1fr);
+	margin: 3%;
+}
+.outdoor-title {
+	font-size: 7vw;
+}
+.outdoor-measurements {
+	font-size: 3vw;
+}
+.indoor-title {
+	font-size: 11vw;
+}
+.indoor-measurement {
+	font-size:7vw;
+}
+.indoor-sub-measurement {
+	font-size:2vw;
+}
+
+@media screen and (orientation:landscape) {
+	.outdoor-title {
+		grid-area: 1 / span 2;
+		grid-row: 2;
+		margin: 10% 0;
+	}
+	.outdoor-title-container {
+		display: grid;
+		grid-template-rows: 6fr;
+		grid-template-columns: 1fr
+	}
+	.outdor-title-icon {
+		grid-row: 1 / 5;
+	}
+	.outdoor-title-text {
+		grid-row: 5 / 6;
+	}
+	.text-type-place:after {
+		content: 'Quer';
+		margin-top: 0.5vw;
+		font-size: 1.5vw;
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.outdoor-measurements {
+		grid-area: 3 / span 18;
+		grid-row: 2;
+		margin: 10% 0;
+	}
+	.outdoor-measurements-container {
+		display: grid;
+		grid-template-columns: repeat(14, 1fr);
+	}
+	.outdoor-measurement {
+		grid-column: span 3;
+	}
+	.outdoor-weather-state {
+		grid-column: span 2;
+	}
+	.indoor-title {
+		grid-area: 1 / span 2;
+		grid-row: 3 / 5;
+	}
+	.indoor-measurements {
+		grid-area: 2 / span 18;
+		grid-row: 3 / 5;
+	}
+	.indoor-measurements-container {
+		display: grid;
+		grid-template-columns: repeat(14, 1fr);
+	}
+	.indoor-measurement {
+		grid-column: span 7; 
+		grid-row: 1 / 4;
+	}
+	.indoor-sub-measurement {
+		grid-column: span 7; 
+		grid-row: 5 / 6;
+	}
+}
+
+@media screen and (orientation:portrait) {
+	.outdoor-title {
+		grid-area: 1 / span 18;
+		grid-row: 2;
+		margin: 5% 0;
+	}
+	.outdoor-title-container {
+		display: grid;
+		grid-template-rows: 6fr;
+		grid-template-columns: 1fr
+	}
+	.outdor-title-icon {
+		grid-row: 1 / 6;
+	}
+	.outdoor-title-text {
+		grid-row: 6 / 7;
+	}
+	.text-type-place:after {
+		content: 'Quer';
+		margin-top: 0.5vw;
+		font-size: 1.5vw;
+		margin-left: 2vw;
+	}
+	.outdoor-measurements {
+		grid-area: 1 / span 18;
+		grid-row: 3;
+		margin: 5% 0;
+	}
+	.outdoor-measurements-container {
+		display: grid;
+		grid-template-columns: repeat(18, 1fr);
+	}
+	.outdoor-measurement {
+		grid-column: span 4;
+	}
+	.outdoor-weather-state {
+		grid-column: span 2;
+	}
+	.text-type-outdoor, .text-type-indoor {
+		margin-left: 35px;
+	}
+	.text-type-outdoor:before {
+		content: 'Mediciones exteriores';
+		font-size: 3vw;
+	}
+	.indoor-title {
+		grid-area: 1 / span 18;
+		grid-row: 4 / 6;
+		margin: 5% 0;
+	}
+	.indoor-measurements {
+		grid-area: 1 / span 18;
+		grid-row: 6 / 8;
+		margin: 5% 0;
+	}
+	.indoor-measurements-container {
+		display: grid;
+		grid-template-columns: repeat(18, 1fr);
+	}
+	.indoor-measurement {
+		grid-column: span 9; 
+		grid-row: 1 / 4;
+	}
+	.indoor-sub-measurement {
+		grid-column: span 9; 
+		grid-row: 5 / 6;
+	}
+	.text-type-indoor:before {
+		content: 'Mediciones interiores';
+		font-size: 5vw;
+	}	
+}
