@@ -1,15 +1,15 @@
+#include <DHTesp.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
-#include <OneWire.h>
 #include "config.h"
 
-OneWire ds(DHTPin);
+DHTesp dht;
 
 #include "WifiConnection.hpp"
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 
     pinMode(CONNECTED_LED, OUTPUT);
     pinMode(CONNECTING_LED, OUTPUT);
@@ -19,52 +19,12 @@ void setup() {
   if (!connectToWifi()) {
     ESP.restart();
   }
+  dht.setup(DHTPin, DHTesp::DHT11);
 }
 
 void loop() {
     updateMeasurement();
     delay(30000); // Prueba, sustituir con valor real después
-}
-
-float getTemp() {
-  byte data[12];
-  byte addr[8];
-
-  if(!ds.search(addr)) {
-    ds.reset_search();
-    return -1000;
-  }
-
-  if(OneWire::crc8(addr, 7) != addr[7]) {
-    Serial.println("CRC is not valid");
-    return -1000;
-  }
-
-  if(addr[0] != 0x10 && addr[0] != 0x28) {
-    Serial.print("Device is not recognized");
-    return -1000;
-  }
-
-  ds.reset();
-  ds.select(addr);
-  ds.write(0x44,1);
-
-  byte present = ds.reset();
-  ds.select(addr);
-  ds.write(0xBE);
-
-  for (int i = 0; i < 9; i++) {
-    data[i] = ds.read();
-  }
-
-  ds.reset_search();
-
-  byte MSB = data[1];
-  byte LSB = data[0];
-
-  float tempRead = ((MSB << 8) | LSB);
-  float temperatureSum = tempRead / 16;
-  return temperatureSum;
 }
 
 void sendRequestLedOn() {
@@ -85,20 +45,23 @@ void failRequestLedOff() {
 
 void updateMeasurement() {
     sendRequestLedOn();
+    
+    float humidity = dht.getHumidity();
+    float temperature = dht.getTemperature();
 
     HTTPClient http;
     http.begin(HEFESTO_SERVER);
     http.addHeader("Content-Type", "application/json");
     
     String body = "";
-    float temperature = getTemp();
     StaticJsonDocument<64> jsonRequest;
     jsonRequest["temperature"] = temperature;
+    jsonRequest["humidity"] = humidity;
     serializeJson(jsonRequest, body);
 
     int httpCode = http.PUT(body);
 
-    if (httpCode == 200) {
+    if (httpCode == 201) {
         Serial.print(httpCode);
         sendRequestLedOff();
     } else {

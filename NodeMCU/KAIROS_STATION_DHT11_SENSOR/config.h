@@ -18,4 +18,4 @@ int WIFI_CONNECTION_TIME_OUT = 100; // Timeout to connect to the WiFi
 /**
  * API REST Server configuration
  */
-
+const char* HEFESTO_SERVER = "http://IP:PORT/station/<station_id>/measurements";
