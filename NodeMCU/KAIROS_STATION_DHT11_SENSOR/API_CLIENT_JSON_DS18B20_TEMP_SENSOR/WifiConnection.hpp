@@ -11,28 +11,13 @@ void printWifiConnectionDetails() {
   Serial.println(" dBm");
 }
 
-void connectingLedOn() {
-    digitalWrite(CONNECTING_LED, HIGH);
-    delay(1000);
-    digitalWrite(CONNECTING_LED, LOW);
-    delay(1000);
-}
-
-void failConnectionLedOn() {
-  digitalWrite(CONNECTING_LED, HIGH);
-}
-
-void connectionSuccessLedOn() {
-  digitalWrite(CONNECTED_LED, HIGH);
-}
-
 bool connectToWifi() {
   connectingLedOn();
   
   WiFi.hostname(HOST_NAME);
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, PASSWORD);
-  
+
   connectingLedOn();
 
   for (int i = 0; i < WIFI_CONNECTION_TIME_OUT; i++) {
@@ -49,4 +34,13 @@ bool connectToWifi() {
 
   failConnectionLedOn();
   return false;
+}
+
+void restartOnConnectionFailure() {
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Wifi check: Connected");
+  } else {
+    Serial.println("Wifi check: Not Connected");
+    ESP.restart();
+  }
 }
